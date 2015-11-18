@@ -1,0 +1,30 @@
+﻿{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>New post</h1>
+{{ thread.topic }}
+
+<div class="jumbotron">
+    {% if show_form %}
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="content" cols="40" rows="5"></textarea><br />
+            <input class="btn btn-primary" type="submit" value="Post" />
+        </form>
+    {% else %}
+        Posted <input class="btn btn-primary" type="button" value="Go back" onclick="history.go(-2);"/>
+        <div class="row">      
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">#{{ post.id }}, {{ post.written_by.username }}, on {{ post.written_on }}</h3>
+                </div>
+                <div class="panel-body">
+                  {{ post.content }}
+                </div>
+            </div>      
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

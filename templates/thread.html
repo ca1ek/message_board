@@ -1,0 +1,22 @@
+﻿{% extends 'base.html' %}
+
+
+{% block content %}
+    <a href="{% url 'forum' thread.forum.slug %}">{{ thread.forum.name }}</a>
+    <h1>{{ thread.topic }}</h1><br />
+<div class="jumbotron">
+    {% for Post in posts %}
+    <div class="row">
+        
+            <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">#{{ Post.id }}, {{ Post.written_by.username }}, on {{ Post.written_on }}</h3>
+            </div>
+            <div class="panel-body">
+              {{ Post.content }}
+            </div>
+          </div>      
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
