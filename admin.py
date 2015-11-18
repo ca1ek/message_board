@@ -12,9 +12,9 @@ class ThreadAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('topic',)}
 
 
-class PostAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('content',)}
+#class PostAdmin(admin.ModelAdmin):
+#    prepopulated_fields = {'slug':('content',)} things not needed anymore
 
 admin.site.register(Forum, ForumAdmin)
 admin.site.register(Thread, ThreadAdmin)
-admin.site.register(Post, PostAdmin)
+admin.site.register(Post)
