@@ -43,7 +43,7 @@ class Post(models.Model):
     thread = models.ForeignKey(Thread)
     content = models.TextField("Message")
     written_on = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(max_length=20)
+    # slug = models.SlugField(max_length=20) things not really needed anymore
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.content)
