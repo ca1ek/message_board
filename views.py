@@ -43,5 +43,4 @@ def new_post(request, thread_slug):
         c['show_form'] = True
         c.update(csrf(request)) # add CSRF token to dict
 
-
     return render_to_response('newpost.html', c)
