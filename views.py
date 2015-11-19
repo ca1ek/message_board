@@ -1,6 +1,7 @@
 ﻿from django.http import Http404
 from django.shortcuts import render_to_response, render
 from django.template.context_processors import csrf
+from django.views.generic.base import TemplateView
 
 from .models import Forum, Thread, Post
 from .forms import PostForm
