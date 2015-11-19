@@ -18,5 +18,8 @@
           </div>      
     </div>
     {% endfor %}
+    {% if can_post %}
+        <a href="{% url 'new_post' thread.slug %}" class="btn btn-lg btn-primary">New post</a>
+    {% endif %}
 </div>
 {% endblock %}

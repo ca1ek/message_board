@@ -18,14 +18,22 @@ def forum(request, forum_slug):
     forum = Forum.objects.get(slug=forum_slug)
     parent_of = Forum.objects.filter(parent=forum)
     threads = Thread.objects.filter(forum=forum)
+    can_make_forums = request.user.has_perm('message_board.add_forum')
+    can_make_threads = request.user.has_perm('message_board.add_thread')
 
-    return render_to_response('index.html', {'forums': parent_of, 'threads': threads, 'forum': forum})
+    c = {'forums': parent_of, 'threads': threads, 'forum': forum, 'can_forum': can_make_forums, 'can_thread': can_make_threads}
+
+    return render_to_response('index.html', c)
 
 def thread(request, thread_slug):
     thread = Thread.objects.get(slug=thread_slug)
     posts = Post.objects.filter(thread=thread)
+    user = request.user
+    can_make_posts = request.user.has_perm('message_board.add_post')
 
-    return render_to_response('thread.html', {'thread': thread, 'posts': posts,})
+    c = {'thread': thread, 'posts': posts, 'user': user, 'can_post': can_make_posts}
+
+    return render_to_response('thread.html', c)
 
 def new_post(request, thread_slug):
     c = {}
