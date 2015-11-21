@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import *
-from .forms import PostForm
+from .forms import *
 
 
 # Create your views here.
@@ -49,7 +49,6 @@ def new_post(request, thread_slug, post_id=None):
             reply_to = None
 
         if form.is_valid():
-            data = form.cleaned_data
             post = form.save(commit=False)
             post.written_by = request.user
             post.thread = thread
@@ -68,3 +67,27 @@ def new_post(request, thread_slug, post_id=None):
         c.update(csrf(request))  # add CSRF token to dict
 
     return render_to_response('newpost.html', c)
+
+def new_thread(request, forum_slug):
+    c = {}
+    forum = Forum.objects.get(slug=forum_slug)
+                            
+    if request.method == 'POST':
+        thread_form = ThreadForm(request.POST)
+        post_form = PostForm(request.POST)
+        if thread_form.is_valid() and post_form.is_valid():
+            thread = thread_form.save(commit=False)
+            thread.started_by = request.user
+            thread.forum = forum
+            thread.save()
+
+            post = post_form.save(commit=False)
+            post.written_by = request.user
+            post.thread = thread
+            post.save()   
+            
+    else:         
+        c['show_form'] = True
+        c.update(csrf(request))  # add CSRF token to dict
+
+    return render_to_response('newthread.html', c)
