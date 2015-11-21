@@ -1,0 +1,32 @@
+﻿{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="jumbotron">
+    {% if show_form %}
+        {% if error %}
+            <h2>Error: form invalid <small>possiby you attempted to make an empty post</small></h2><br />
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="topic" style="min-width: 100%" rows="1"></textarea><br />
+            <textarea name="content" style="min-width: 100%" rows="5"></textarea><br />
+            <input class="btn btn-primary" type="submit" value="Post" />
+        </form>
+    {% else %}
+        Posted <input class="btn btn-primary" type="button" value="Go back" onclick="history.go(-2);"/>
+        <div class="row">      
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   <h3 class="panel-title">#{{ post.id }}, {{ post.written_by.username }}, on {{ post.written_on }}</h3>
+                </div>
+                <div class="panel-body">
+                  {{ post.content }}
+                </div>
+            </div>      
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
