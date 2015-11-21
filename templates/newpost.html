@@ -10,7 +10,7 @@
     {% if show_form %}
         <form method="post">
             {% csrf_token %}
-            <textarea name="content" cols="40" rows="5"></textarea><br />
+            <textarea name="content" style="min-width: 100%" rows="5"></textarea><br />
             <input class="btn btn-primary" type="submit" value="Post" />
         </form>
     {% else %}
