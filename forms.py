@@ -1,4 +1,7 @@
-from django import forms
+﻿from django import forms
+from .models import Post
 
-class PostForm(forms.Form):
-    content = forms.CharField(label='Message \n', max_length=10000, widget=forms.Textarea)
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('content',)

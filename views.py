@@ -50,14 +50,18 @@ def new_post(request, thread_slug, post_id=None):
 
         if form.is_valid():
             data = form.cleaned_data
-            post = Post(written_by=user, thread=thread, content=data['content'], reply_to=reply_to)
+            post = form.save(commit=False)
+            post.written_by = request.user
+            post.thread = thread
+            post.reply_to = reply_to
             post.save()       
 
         c['thread'] = thread
         try:
             c['post'] = post
         except UnboundLocalError:
-            pass # TODO
+            c['error'] = True
+            c['show_form'] = True
     else:         
         c['thread'] = thread
         c['show_form'] = True
