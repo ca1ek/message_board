@@ -5,6 +5,7 @@ from django.template.defaultfilters import slugify
 # Create your models here.
 
 
+
 class Forum(models.Model):
     name = models.CharField("Forum name", max_length=60)
     description = models.TextField("Description")
@@ -44,6 +45,7 @@ class Post(models.Model):
     content = models.TextField("Message")
     written_on = models.DateTimeField(auto_now_add=True)
     # slug = models.SlugField(max_length=20) things not really needed anymore
+    reply_to = models.ForeignKey("Post", blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.content)
