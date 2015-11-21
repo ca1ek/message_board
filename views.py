@@ -54,7 +54,10 @@ def new_post(request, thread_slug, post_id=None):
             post.save()       
 
         c['thread'] = thread
-        c['post'] = post
+        try:
+            c['post'] = post
+        except UnboundLocalError:
+            pass # TODO
     else:         
         c['thread'] = thread
         c['show_form'] = True
