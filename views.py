@@ -2,8 +2,9 @@
 from django.shortcuts import render_to_response, render
 from django.template.context_processors import csrf
 from django.views.generic.base import TemplateView
+from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Forum, Thread, Post
+from .models import *
 from .forms import PostForm
 
 
@@ -44,7 +45,7 @@ def new_post(request, thread_slug, post_id=None):
         user = request.user
         try:
             reply_to = Post.objects.get(id=post_id)
-        except message_board.models.DoesNotExist:
+        except ObjectDoesNotExist:
             reply_to = None
 
         post = Post(written_by=user, thread=thread, content=q['content'], reply_to=reply_to)
