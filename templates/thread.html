@@ -2,24 +2,41 @@
 
 
 {% block content %}
-    <a href="{% url 'forum' thread.forum.slug %}">{{ thread.forum.name }}</a>
-    <h1>{{ thread.topic }}</h1><br />
-<div class="jumbotron">
-    {% for Post in posts %}
-    <div class="row">
-        
+    
+    <h1><small><a href="{% url 'forum' thread.forum.slug %}">{{ thread.forum.name }}</a></small> {{ thread.topic }}</h1><br />
+    <div class="jumbotron">
+        {% for Post in posts %}
+        <div class="row">     
             <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">#{{ Post.id }}, {{ Post.written_by.username }}, on {{ Post.written_on }}</h3>
-            </div>
-            <div class="panel-body">
-              {{ Post.content }}
-            </div>
-          </div>      
+                <div class="panel-heading">
+                    <div class="pull-left panel-title">#{{ Post.id }}, {{ Post.written_by.username }}, on {{ Post.written_on }}</div>
+                    <div class="pull-right"><a href="{% url 'quote_post' thread.slug Post.id %}" class="btn btn-xs btn-primary">Quote</a></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                    {% if Post.reply_to %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="pull-left panel-title">
+                                    <button type="button" class="btn btn-xs btn-default" data-toggle="collapse" data-target="#quote{{ Post.reply_to.id }}" aria-expanded="false" aria-controls="quote{{ Post.reply_to.id }}">
+                                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                    </button>
+                                    #{{ Post.reply_to.id }}, {{ Post.reply_to.written_by.username }}, on {{ Post.reply_to.written_on }}
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-body collapse" id="quote{{ Post.reply_to.id }}">
+                                    {{ Post.reply_to.content }}
+                            </div>
+                        </div>
+                    {% endif %}
+                  {{ Post.content }}
+                </div>
+            </div>      
+        </div>
+        {% endfor %}
+        {% if can_post %}
+            <a href="{% url 'new_post' thread.slug %}" class="btn btn-lg btn-primary">New post</a>
+        {% endif %}
     </div>
-    {% endfor %}
-    {% if can_post %}
-        <a href="{% url 'new_post' thread.slug %}" class="btn btn-lg btn-primary">New post</a>
-    {% endif %}
-</div>
 {% endblock %}
