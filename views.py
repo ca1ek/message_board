@@ -41,19 +41,21 @@ def new_post(request, thread_slug, post_id=None):
     thread = Thread.objects.get(slug=thread_slug)
                             
     if request.method == 'POST':
-        q = request.POST.dict()
         user = request.user
+        form = PostForm(request.POST)
         try:
             reply_to = Post.objects.get(id=post_id)
         except ObjectDoesNotExist:
             reply_to = None
 
-        post = Post(written_by=user, thread=thread, content=q['content'], reply_to=reply_to)
-        post.save()
+        if form.is_valid():
+            data = form.cleaned_data
+            post = Post(written_by=user, thread=thread, content=data['content'], reply_to=reply_to)
+            post.save()       
 
         c['thread'] = thread
         c['post'] = post
-    else:              
+    else:         
         c['thread'] = thread
         c['show_form'] = True
         c.update(csrf(request))  # add CSRF token to dict
