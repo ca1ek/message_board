@@ -4,16 +4,22 @@
 {% block content %}
     
     <h1><small><a href="{% url 'forum' thread.forum.slug %}">{{ thread.forum.name }}</a></small> {{ thread.topic }}</h1><br />
+
     <div class="jumbotron">
+
         {% for Post in posts %}
         <div class="row">     
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="pull-left panel-title">#{{ Post.id }}, {{ Post.written_by.username }}, on {{ Post.written_on }}</div>
+                    {% if can_post %}
                     <div class="pull-right"><a href="{% url 'quote_post' thread.slug Post.id %}" class="btn btn-xs btn-primary">Quote</a></div>
+                    {% endif %}
                     <div class="clearfix"></div>
                 </div>
+
                 <div class="panel-body">
+
                     {% if Post.reply_to %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -25,16 +31,19 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+
                             <div class="panel-body collapse" id="quote{{ Post.reply_to.id }}">
                                     {{ Post.reply_to.content }}
                             </div>
                         </div>
                     {% endif %}
+
                   {{ Post.content }}
                 </div>
             </div>      
         </div>
         {% endfor %}
+
         {% if can_post %}
             <a href="{% url 'new_post' thread.slug %}" class="btn btn-lg btn-primary">New post</a>
         {% endif %}
