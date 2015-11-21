@@ -8,6 +8,9 @@
 
 <div class="jumbotron">
     {% if show_form %}
+        {% if error %}
+            <h2>Error: form invalid <small>possiby you attempted to make an empty post</small></h2><br />
+        {% endif %}
         <form method="post">
             {% csrf_token %}
             <textarea name="content" style="min-width: 100%" rows="5"></textarea><br />
